@@ -29,7 +29,7 @@ A modular multi-agent configuration for OpenCode that turns your terminal into a
 
 | Agent | Model | Tools | Role |
 |-------|-------|-------|------|
-| **@vision** | `google/gemini-2.5-flash-image` | playwright, windows-mcp | Screen analysis, OCR, UI element detection |
+| **@vision** | `ollama/qwen3-vl:8b` | playwright, windows-mcp | Screen analysis, OCR, UI element detection |
 | **@desktop** | `opencode/deepseek-v4-flash-free` | windows-mcp | Click, type, keyboard shortcuts, app control |
 | **@browser** | `opencode/deepseek-v4-flash-free` | playwright | Web navigation, form filling, content extraction |
 
@@ -51,9 +51,9 @@ The primary agent handles simple tasks directly — file search, documentation r
 - **OpenCode** v0.25+ (`npm i -g opencode` / `npx opencode`)
 - **Node.js** 22+
 - **PowerShell 7**
+- **Ollama** with `qwen3-vl:8b` model (for @vision) — `ollama pull qwen3-vl:8b`
 - **API Keys:**
   - [DeepSeek](https://platform.deepseek.com) API key (for @coder)
-  - [Google Gemini](https://aistudio.google.com/apikey) API key (for @vision)
   - [OpenAI ChatGPT Pro](https://chatgpt.com) subscription (for @architect)
 - **MCP Servers (auto-configured):**
   - `windows-mcp` — Windows desktop control
@@ -74,12 +74,21 @@ cd OpenCode-Agent-Army
 
 ```powershell
 $env:DEEPSEEK_API_KEY = "sk-your-deepseek-key"
-$env:GEMINI_API_KEY = "AIzaSy-your-gemini-key"
+
+# @vision ใช้ local Ollama — ไม่ต้องใช้ API key
+# ตรวจสอบว่า Ollama เปิดอยู่: ollama serve
 ```
 
 Or use a `.env` file (see `.env.example`).
 
-### 3. Install MCP dependencies
+### 3. Ensure Ollama is running
+
+```powershell
+ollama serve
+ollama list  # ควรเห็น qwen3-vl:8b
+```
+
+### 4. Install MCP dependencies
 
 ```powershell
 # Install windows-mcp

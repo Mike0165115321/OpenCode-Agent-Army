@@ -1,7 +1,7 @@
 ---
 description: Takes screenshots and describes what's on screen. Use when user asks to "see", "look at", "screenshot", or "what's on" the screen.
 mode: subagent
-model: google/gemini-2.5-flash-image
+model: ollama/qwen3-vl:8b
 permission:
   bash: ask
 ---

@@ -14,7 +14,7 @@ You are the orchestrator. Use `task` to delegate to specialist agents.
 ### Group 1: Desktop & Browser Control
 | Agent | Model | Tools |
 |-------|-------|-------|
-| @vision | google/gemini-2.5-flash-image | playwright, windows-mcp (Snapshot) |
+| @vision | ollama/qwen3-vl:8b | playwright, windows-mcp (Snapshot) |
 | @desktop | opencode/deepseek-v4-flash-free | windows-mcp (Click, Type, Shortcut, Scroll, Move, App, Process) |
 | @browser | opencode/deepseek-v4-flash-free | playwright (navigate, click, fill, extract) |
 
@@ -65,9 +65,9 @@ Always report back to the user with:
 - **Node.js:** v22.16.0
 - **Python:** uv (Astral)
 - **API Keys:**
-  - DeepSeek: env DEEPSEEK_API_KEY
-  - Gemini: env GEMINI_API_KEY
-  - OpenAI: OAuth (ChatGPT Pro)
+  - DeepSeek: env DEEPSEEK_API_KEY (for @coder)
+  - OpenAI: OAuth (ChatGPT Pro, for @architect)
+- **Ollama:** qwen3-vl:8b local (for @vision, no API key needed)
 - **Warning:** env OPENAI_API_BASE is set to https://api.deepseek.com — opencode.json overrides OpenAI base URL to fix this
 
 ## MCP Servers
