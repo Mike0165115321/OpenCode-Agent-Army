@@ -42,6 +42,7 @@
   },
 
   "agent": {
+    "captain": {},
     "vision": { "model": "google/gemini-2.5-flash-image" },
     "desktop": {},
     "browser": {},
@@ -54,11 +55,33 @@
   "permission": {
     "edit": "ask",
     "bash": {
-      "npm *": "allow",
-      "git *": "allow",
+      "*": "ask",
+      "npm test": "allow",
+      "npm run *": "allow",
+      "npm install": "allow",
+      "npm ci": "allow",
+      "npx *": "allow",
       "uv *": "allow",
-      "pip *": "allow",
-      "*": "ask"
+      "pip install *": "allow",
+      "python *": "allow",
+      "node *": "allow",
+      "git status": "allow",
+      "git diff": "allow",
+      "git log *": "allow",
+      "git add *": "allow",
+      "git commit *": "allow",
+      "git push": "allow",
+      "git pull": "allow",
+      "git fetch": "allow",
+      "git branch": "allow",
+      "git checkout": "allow",
+      "git reset": "deny",
+      "git clean": "deny",
+      "git merge": "ask",
+      "git rebase": "ask",
+      "rm *": "ask",
+      "Remove-Item *": "ask",
+      "del *": "ask"
     }
   }
 }

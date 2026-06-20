@@ -2,11 +2,14 @@
 
 ## Project Info
 - **Name:** OpenCode Agent Army
-- **Location:** `E:\Project\OpenCode-Agent-Army`
-- **Drive E:** 393 GB free
-- **GitHub:** Mike0165115321
+- **GitHub:** https://github.com/Mike0165115321/OpenCode-Agent-Army
+- **Local:** `E:\Project\OpenCode-Agent-Army`
 
 ## Agent Architecture
+
+### Primary Agent (You)
+**Model:** `opencode/deepseek-v4-flash-free`
+You are the orchestrator. Use `task` to delegate to specialist agents.
 
 ### Group 1: Desktop & Browser Control
 | Agent | Model | Tools |
@@ -23,8 +26,39 @@
 | @reviewer | opencode/deepseek-v4-flash-free | read, grep, glob, bash | edit=deny, write=deny |
 | @qa | opencode/deepseek-v4-flash-free | read, grep, bash | edit=deny, write=deny |
 
-### Group 3: Direct
-Primary model (opencode/deepseek-v4-flash-free) handles simple tasks directly.
+### Group 3: Ad-Hoc
+Handle directly without delegation.
+
+## Orchestration Rules
+
+### Task Classification
+Classify every request before delegating:
+- **Simple** → handle directly (file search, Q&A, quick code lookup)
+- **Desktop** → involves app/window control → delegate to Group 1
+- **Browser** → involves web navigation → delegate to Group 1
+- **Build** → involves designing/coding/testing → delegate to Group 2
+
+### Before Delegating
+1. Classify the task into exactly one category
+2. Choose the minimum agents needed
+3. Never run destructive actions (delete, overwrite, force push) without user confirmation
+4. For screen-dependent tasks, always call @vision BEFORE @desktop/@browser
+
+### Build Pipeline (Group 2)
+1. **@architect** first — produces the design spec (read-only)
+2. **@coder** implements from the spec — only after spec is ready
+3. **@reviewer** reviews the code — reports categorized issues (CRITICAL/MAJOR/MINOR)
+4. Fix CRITICAL and MAJOR issues via **@coder**
+5. **@reviewer** re-reviews to confirm fixes
+6. **@qa** runs linters, type checkers, and tests
+7. If QA fails → return to **@coder** once
+8. **Stop after 2 fix loops** and report remaining issues to the user
+
+### Output Format
+Always report back to the user with:
+- What was done
+- Result: ✅ success / ⚠️ partial / ❌ failed
+- Next steps if applicable
 
 ## Environment
 - **Shell:** PowerShell 7
@@ -39,10 +73,5 @@ Primary model (opencode/deepseek-v4-flash-free) handles simple tasks directly.
 ## MCP Servers
 - playwright: npx @playwright/mcp@latest
 - sequential-thinking: npx @modelcontextprotocol/server-sequential-thinking
-- mcpvault: npx @bitbonsai/mcpvault@latest E:\MikeData (Obsidian)
+- mcpvault: npx @bitbonsai/mcpvault@latest E:\MikeData (Obsidian vault)
 - windows-mcp: windows-mcp serve
-
-## Workflow
-For simple tasks: use primary agent directly.
-For desktop/browser: primary delegates to @vision/@desktop/@browser via task tool.
-For build: primary delegates to @architect -> @coder -> @reviewer -> @qa pipeline.
