@@ -1,0 +1,64 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "opencode/deepseek-v4-flash-free",
+  "small_model": "opencode/north-mini-code-free",
+  "instructions": ["CONTEXT.md"],
+
+  "provider": {
+    "deepseek": {
+      "options": {
+        "apiKey": "{env:DEEPSEEK_API_KEY}",
+        "baseURL": "https://api.deepseek.com"
+      }
+    },
+    "openai": {
+      "options": {
+        "baseURL": "https://api.openai.com"
+      }
+    }
+  },
+
+  "mcp": {
+    "playwright": {
+      "type": "local",
+      "command": ["npx", "-y", "@playwright/mcp@latest"],
+      "enabled": true
+    },
+    "sequential-thinking": {
+      "type": "local",
+      "command": ["npx", "-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "enabled": true
+    },
+    "mcpvault": {
+      "type": "local",
+      "command": ["npx", "-y", "@bitbonsai/mcpvault@latest", "E:\\MikeData"],
+      "enabled": true
+    },
+    "windows-mcp": {
+      "type": "local",
+      "command": ["windows-mcp", "serve"],
+      "enabled": true
+    }
+  },
+
+  "agent": {
+    "vision": { "model": "google/gemini-2.5-flash-image" },
+    "desktop": {},
+    "browser": {},
+    "architect": { "model": "openai/gpt-5.5" },
+    "coder": { "model": "deepseek/v4-pro" },
+    "reviewer": {},
+    "qa": {}
+  },
+
+  "permission": {
+    "edit": "ask",
+    "bash": {
+      "npm *": "allow",
+      "git *": "allow",
+      "uv *": "allow",
+      "pip *": "allow",
+      "*": "ask"
+    }
+  }
+}
