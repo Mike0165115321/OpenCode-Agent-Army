@@ -1,31 +1,5 @@
-# plans directory contains session-specific notes, not part of the config
-.opencode/plans/
-
-# ===== Environment & Secrets =====
-.env
-.env.*
-!.env.example
-
-# ===== Node.js =====
 node_modules/
-npm-debug.log*
-
-# ===== Media Pipeline =====
-# HyperFrames renders and previews
 *.mp4
 *.webm
-*.mov
 renders/
-previews/
-snapshots/
-
-# Asset cache
 .cache/
-generated-assets/
-
-# Agent workspace directories
-projects/generated-projects/*
-
-# ===== Playwright browser cache =====
-.playwright-mcp/
-ms-playwright/

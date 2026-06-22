@@ -1,16 +1,11 @@
 {
-  "name": "opencode-agent-army",
+  "name": "anime-video-pipeline",
   "private": true,
   "version": "0.1.0",
-  "description": "OpenCode Agent Army — Anime Video Pipeline with HyperFrames",
+  "description": "Anime Video Pipeline — สร้างวิดีโออนิเมะด้วย HyperFrames",
   "scripts": {
-    "hyperframes": "hyperframes",
-    "doctor": "hyperframes doctor",
-    "lint": "hyperframes lint",
-    "validate": "hyperframes lint && node scripts/validate-assets.mjs",
-    "preview": "hyperframes preview",
-    "render": "hyperframes render",
-    "env-check": "node scripts/env-check.mjs"
+    "preview": "npx hyperframes preview",
+    "render": "npx hyperframes render"
   },
   "dependencies": {
     "hyperframes": "^0.7.0"
