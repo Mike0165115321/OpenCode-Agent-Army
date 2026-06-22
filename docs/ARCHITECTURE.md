@@ -1,12 +1,12 @@
-# OpenCode Agent Army — Architecture
+# OpenCode Agent Army — สถาปัตยกรรม
 
-> **Evidence Strength Key:** `Direct` = from files | `Inferred` = derived from code/config | `Assumed` = working premise | `Proposed` = not yet implemented
+> **ป้ายระดับหลักฐาน:** `Direct` = ยืนยันจากไฟล์ | `Inferred` = อนุมานจากโค้ด/config | `Assumed` = สมมติฐานที่ใช้ทำงาน | `Proposed` = ยังไม่ implement
 
 ---
 
-## 1. System Overview
+## 1. ภาพรวมระบบ
 
-**OpenCode Agent Army** is not a traditional application. It is a **multi-agent orchestration configuration** for [OpenCode](https://opencode.ai) — an AI coding assistant — augmented with a **media production pipeline** for generating anime-style videos via [HyperFrames](https://hyperframes.ai).
+**OpenCode Agent Army** ไม่ใช่แอปพลิเคชันทั่วไป มันคือ **การจัดวาง multi-agent** สำหรับ [OpenCode](https://opencode.ai) — AI coding assistant — ที่เพิ่ม **สายพานผลิตสื่อ (Media Pipeline)** สำหรับสร้างวิดีโอแนวอนิเมะผ่าน [HyperFrames](https://hyperframes.ai)
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
@@ -14,159 +14,159 @@
 │                                                                  │
 │  ┌─────────────────────┐    ┌─────────────────────────────────┐  │
 │  │  Layer 1: Agents     │    │  Layer 2: Media Pipeline        │  │
-│  │  (open reason + act) │    │  (deterministic production)     │  │
+│  │  (คิด + สั่งการ)      │    │  (ผลิตแบบ deterministic)        │  │
 │  │                     │    │                                 │  │
 │  │  @captain ──► G1    │    │  @director ─► SCRIPT.md         │  │
-│  │            ├── G2   │    │  Asset Gate ─► validate         │  │
+│  │            ├── G2   │    │  Asset Gate ─► ตรวจสอบ          │  │
 │  │            └── G3   │    │  @coder ─► composition          │  │
 │  │                     │    │  @mediaqa ─► snapshots          │  │
 │  └─────────────────────┘    └─────────────────────────────────┘  │
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-*Source: `CONTEXT.md`, `opencode.json`, `docs/media-workflow.md` — Direct*
+*ที่มา: `CONTEXT.md`, `opencode.json`, `docs/media-workflow.md` — Direct*
 
 ---
 
-## 2. Agent Architecture
+## 2. สถาปัตยกรรม Agent
 
-### 2.1 Agent Hierarchy
+### 2.1 ลำดับชั้น Agent
 
 ```
-                                    You (User)
+                                    คุณ (ผู้ใช้)
                                        │
                                    @captain
-                                  (orchestrator)
+                                  (ผู้ประสานงาน)
                               ┌───────┼───────────┐
                               │       │           │
                          Group 1  Group 2    Group 3
                       (Desktop)  (Build)    (Media)
 ```
 
-*Source: `00-captain.md`, `CONTEXT.md` — Direct*
+*ที่มา: `00-captain.md`, `CONTEXT.md` — Direct*
 
-### 2.2 Agent Roles & Boundaries
+### 2.2 บทบาทและขอบเขตของ Agent
 
-| Agent | Model | Permission | Boundary |
-|-------|-------|------------|----------|
-| **@captain** | opencode/deepseek-v4-flash-free | full orchestrator | Classifies + delegates only |
-| **@vision** | ollama/qwen3-vl:8b | screen read-only | Snapshots, OCR, UI detection |
-| **@desktop** | opencode/deepseek-v4-flash-free | Click/Type/Shortcut | Windows app control |
-| **@browser** | opencode/deepseek-v4-flash-free | Playwright | Web navigation |
-| **@architect** | openai/gpt-5.5 | **edit=deny, write=deny** | Design only |
-| **@coder** | deepseek/v4-pro | **full access** | Implementation |
-| **@reviewer** | opencode/deepseek-v4-flash-free | **edit=deny, write=deny** | Code review |
-| **@qa** | opencode/deepseek-v4-flash-free | **edit=deny**, bash=ask | Automated checks |
-| **@director** | openai/gpt-5.5 | **edit=deny, write=deny** | Script/storyboard |
-| **@mediaqa** | ollama/qwen3-vl:8b | **edit=deny, write=deny** | Visual QA |
+| Agent | Model | สิทธิ์ | ขอบเขต |
+|-------|-------|--------|--------|
+| **@captain** | opencode/deepseek-v4-flash-free | จัดการทุกอย่าง | แยกประเภทงาน + มอบหมายเท่านั้น |
+| **@vision** | ollama/qwen3-vl:8b | อ่านหน้าจออย่างเดียว | Snapshots, OCR, หา UI elements |
+| **@desktop** | opencode/deepseek-v4-flash-free | คลิก/พิมพ์/คีย์ลัด | ควบคุม Windows app |
+| **@browser** | opencode/deepseek-v4-flash-free | Playwright | ท่องเว็บ |
+| **@architect** | openai/gpt-5.5 | **edit=deny, write=deny** | ออกแบบอย่างเดียว |
+| **@coder** | deepseek/v4-pro | **เข้าถึงเต็ม** | ลงมือเขียนโค้ด |
+| **@reviewer** | opencode/deepseek-v4-flash-free | **edit=deny, write=deny** | รีวิวโค้ด |
+| **@qa** | opencode/deepseek-v4-flash-free | **edit=deny**, bash=ask | ตรวจสอบอัตโนมัติ |
+| **@director** | openai/gpt-5.5 | **edit=deny, write=deny** | เขียนบท/storyboard |
+| **@mediaqa** | ollama/qwen3-vl:8b | **edit=deny, write=deny** | ตรวจสอบ visual |
 
-*Source: `opencode.json` (agent config), `.opencode/agents/*.md` (role definitions) — Direct*
+*ที่มา: `opencode.json` (config agent), `.opencode/agents/*.md` (นิยามบทบาท) — Direct*
 
-### 2.3 Key Architectural Decisions
+### 2.3 การตัดสินใจทางสถาปัตยกรรมที่สำคัญ
 
-| Decision | Rationale | Source |
-|----------|-----------|--------|
-| Agents split by capability groups | Prevents privilege escalation — desktop agents can't write files, build agents can't click UI | `SECURITY.md` |
-| @director and @mediaqa are read-only | Creative work separated from technical implementation | `08-director.md` |
-| @coder has full access but git push=ask | Enables implementation while preventing accidental remote pushes | `opencode.json` permission rules |
-| Ollama for vision (local privacy) | No API cost, no data leaving machine | `01-vision.md` |
-| OpenAI GPT-5.5 for architect/director | Higher reasoning quality for design decisions | `04-architect.md`, `08-director.md` |
+| การตัดสินใจ | เหตุผล | ที่มา |
+|-------------|--------|------|
+| แยก Agent ตามกลุ่มความสามารถ | ป้องกัน privilege escalation — desktop agents เขียนไฟล์ไม่ได้, build agents คลิก UI ไม่ได้ | `SECURITY.md` |
+| @director และ @mediaqa เป็น read-only | แยกงานสร้างสรรค์ออกจากงานเทคนิค | `08-director.md` |
+| @coder เข้าถึงเต็ม แต่ git push=ask | ให้เขียนโค้ดได้ แต่ป้องกันการ push โดยไม่ตั้งใจ | `opencode.json` permission |
+| Ollama สำหรับ vision (local) | ไม่เสียค่า API, ข้อมูลไม่ต้องออกเครื่อง | `01-vision.md` |
+| OpenAI GPT-5.5 สำหรับ architect/director | คุณภาพการคิดออกแบบสูงกว่า | `04-architect.md`, `08-director.md` |
 
-*Source: Agent `.md` files, `opencode.json` permissions — Direct*
+*ที่มา: ไฟล์ `.md` ของ Agent, `opencode.json` permissions — Direct*
 
 ---
 
-## 3. Media Pipeline Architecture
+## 3. สถาปัตยกรรม Media Pipeline
 
-### 3.1 Pipeline Stages
+### 3.1 ขั้นตอนใน Pipeline
 
 ```
-Brief ──► Script ──► Assets ──► Compose ──► Check ──► Render ──► MP4
+Brief ──► Script ──► Assets ──► ประกอบ ──► ตรวจ ──► Render ──► MP4
   │          │          │           │          │          │
   │    @director   Asset Gate   @coder    @reviewer   hyperframes
-  │    SCRIPT.md   validate     index.html @qa         render
+  │    SCRIPT.md   ตรวจสอบ     index.html @qa         render
   │    STORYBOARD  manifest     GSAP tl    @mediaqa
   └──────────────────────────────────────────────────────────►
 ```
 
-*Source: `docs/media-workflow.md`, `09-media-qa.md`, `08-director.md` — Direct*
+*ที่มา: `docs/media-workflow.md`, `09-media-qa.md`, `08-director.md` — Direct*
 
-### 3.2 File Responsibility Map
+### 3.2 ไฟล์แต่ละตัวรับผิดชอบอะไร
 
-| File | Responsibility | Layer |
-|------|---------------|-------|
-| `opencode.json` | Root config: providers, MCP, agents, permissions | Orchestration |
-| `CONTEXT.md` | Environment context + orchestration rules for primary agent | Orchestration |
-| `.opencode/agents/00-captain.md` | Task classification + delegation logic | Orchestration |
-| `.opencode/agents/01-09-*.md` | Per-agent instructions + permission boundaries | Orchestration |
-| `index.html` | HyperFrames composition (the actual video) | Media |
-| `schemas/` | JSON Schemas (character, asset-manifest, storyboard) | Media |
-| `templates/anime-short/` | Production document templates for @director | Media |
-| `characters/<id>/` | Character bible + manifests + pose SVGs/PNGs | Media |
-| `scripts/env-check.mjs` | Environment prerequisite verification | Quality |
-| `scripts/validate-assets.mjs` | Asset integrity checks | Quality |
-| `scripts/snapshot-video.ps1` | Keyframe extraction from rendered video | Quality |
-| `scripts/render-video.ps1` | Render command wrapper | Media |
-| `qa/` | Snapshots + QA reports | Quality |
-| `docs/` | Architecture + workflow documentation | Knowledge |
-| `SECURITY.md` | Security guidelines and agent permissions | Safety |
+| ไฟล์ | หน้าที่ | ชั้น |
+|------|--------|------|
+| `opencode.json` | Config หลัก: providers, MCP, agents, permissions | Orchestration |
+| `CONTEXT.md` | บริบท environment + กฎการทำงานของ agent หลัก | Orchestration |
+| `.opencode/agents/00-captain.md` | แยกประเภทงาน + ตรรกะการมอบหมาย | Orchestration |
+| `.opencode/agents/01-09-*.md` | คำแนะนำ + ขอบเขตสิทธิ์ของแต่ละ agent | Orchestration |
+| `index.html` | HyperFrames composition (ตัววิดีโอจริง) | Media |
+| `schemas/` | JSON Schemas (ตัวละคร, asset-manifest, storyboard) | Media |
+| `templates/anime-short/` | Template เอกสารผลิตสำหรับ @director | Media |
+| `characters/<id>/` | Character bible + manifest + pose SVGs/PNGs | Media |
+| `scripts/env-check.mjs` | ตรวจสอบ prerequisite ของระบบ | Quality |
+| `scripts/validate-assets.mjs` | ตรวจสอบความถูกต้องของ assets | Quality |
+| `scripts/snapshot-video.ps1` | ดึง keyframe จากวิดีโอที่ render แล้ว | Quality |
+| `scripts/render-video.ps1` | คำสั่งเรียก render แบบสะดวก | Media |
+| `qa/` | Snapshots + รายงาน QA | Quality |
+| `docs/` | เอกสารสถาปัตยกรรม + การทำงาน | Knowledge |
+| `SECURITY.md` | แนวทางความปลอดภัย + สิทธิ์ของ agent | Safety |
 
-*Source: Inspection of each file purpose — Direct*
+*ที่มา: ตรวจสอบวัตถุประสงค์ของแต่ละไฟล์ — Direct*
 
-### 3.3 Data Flow (Media Pipeline)
+### 3.3 การไหลของข้อมูล (Media Pipeline)
 
 ```
-@director: Creative Brief
+@director: รับ Brief
     │
     ▼
 [SCRIPT.md] [STORYBOARD.md] [ASSET_MANIFEST.json]
     │
     ▼
 Asset Gate:
-  ┌─ Validate manifest entries exist
-  └─ Check status === "approved"
+  ┌─ ตรวจสอบว่ารายการใน manifest มีอยู่จริง
+  └─ ตรวจสอบสถานะ === "approved"
     │
     ▼
-@coder: Read storyboard + manifest → Write index.html
+@coder: อ่าน storyboard + manifest → เขียน index.html
     │
     ▼
-Quality Gates (sequential):
-  ┌─ @reviewer: CRITICAL/MAJOR/MINOR issues
-  ├─ @qa: hyperframes lint + validate + asset check
-  ├─ @mediaqa: snapshot visual inspection
-  └─ Fix loop (max 2 rounds)
+Quality Gates (เรียงลำดับ):
+  ┌─ @reviewer: แจ้ง issues CRITICAL/MAJOR/MINOR
+  ├─ @qa: รัน hyperframes lint + validate + asset check
+  ├─ @mediaqa: ตรวจสอบ snapshot ด้วยสายตา
+  └─ แก้ไข (สูงสุด 2 รอบ)
     │
     ▼
 hyperframes render → akira-intro-poc.mp4
     │
     ▼
-QA Report → qa/report.json
+รายงาน QA → qa/report.json
 ```
 
-*Source: `docs/media-workflow.md`, `00-captain.md` (media section) — Direct*
+*ที่มา: `docs/media-workflow.md`, `00-captain.md` (ส่วน media) — Direct*
 
 ---
 
-## 4. Module Map
+## 4. แผนผังโมดูล
 
-### 4.1 Module Relationships
+### 4.1 ความสัมพันธ์ระหว่างโมดูล
 
 ```
-┌──────────────┐    references    ┌──────────────────┐
+┌──────────────┐    อ้างอิง     ┌──────────────────┐
 │  Characters   │◄──────────────►│   Templates       │
-│  (assets)     │                 │   (production     │
-│               │                 │    documents)     │
+│  (assets)     │                 │   (เอกสารผลิต)    │
+│               │                 │                   │
 └──────┬───────┘                  └──────────────────┘
-       │ used by
+       │ ถูกใช้โดย
        ▼
-┌──────────────┐    validated by  ┌──────────────────┐
+┌──────────────┐    ตรวจสอบโดย  ┌──────────────────┐
 │  index.html  │◄──────────────►│  Scripts          │
 │  (composition)│                 │  (env-check,      │
 │               │                 │   validate-assets)│
 └──────┬───────┘                  └──────────────────┘
-       │ generates
+       │ สร้าง
        ▼
-┌──────────────┐    inspected by  ┌──────────────────┐
+┌──────────────┐    ตรวจสอบโดย  ┌──────────────────┐
 │  Output MP4   │◄──────────────►│  QA               │
 │  (renders/)   │                 │  (snapshots +     │
 │               │                 │   report.json)    │
@@ -175,77 +175,77 @@ QA Report → qa/report.json
        ▼
 ┌──────────────┐
 │  Projects/   │
-│  (generated)  │
+│  (ผลงานที่สร้าง) │
 └──────────────┘
 ```
 
-*Source: File structure + dependency analysis — Direct*
+*ที่มา: โครงสร้างไฟล์ + วิเคราะห์ dependency — Direct*
 
-### 4.2 External Dependencies
+### 4.2 Dependencies ภายนอก
 
-| Dependency | Version | Purpose | Source |
-|-----------|---------|---------|--------|
-| Node.js | >= 22 | Runtime | `package.json` engines (inferred) |
-| HyperFrames | ^0.7.0 | Video composition + rendering | `package.json` — Direct |
-| FFmpeg | >= 7 | Video encoding | `env-check.mjs` — Direct |
-| GSAP | 3.14.2 | Animation engine (CDN in composition) | `index.html` — Direct |
-| Ollama | qwen3-vl:8b | Vision model for @vision + @mediaqa | `opencode.json` — Direct |
-| OpenAI | GPT-5.5 | Reasoning for @architect + @director | `opencode.json` — Direct |
+| ตัว | เวอร์ชัน | 用途 | ที่มา |
+|-----|---------|------|------|
+| Node.js | >= 22 | Runtime ที่ใช้รัน | `package.json` engines (inferred) |
+| HyperFrames | ^0.7.0 | ประกอบวิดีโอ + render | `package.json` — Direct |
+| FFmpeg | >= 7 | เข้ารหัสวิดีโอ | `env-check.mjs` — Direct |
+| GSAP | 3.14.2 | เอ็นจิน animation (CDN ใน composition) | `index.html` — Direct |
+| Ollama | qwen3-vl:8b | โมเดล vision สำหรับ @vision + @mediaqa | `opencode.json` — Direct |
+| OpenAI | GPT-5.5 | การคิดวิเคราะห์สำหรับ @architect + @director | `opencode.json` — Direct |
 
-*Note: GSAP is loaded from CDN during composition — the HyperFrames compiler inlines it into the output. No external URL access during render.* — Direct
-
----
-
-## 5. Open Questions
-
-> Identified during architecture mapping. These do not block current work but affect future phases.
-
-| # | Question | Impact | Suggested Action |
-|---|----------|--------|-----------------|
-| Q1 | Should AI-Council-Studio assets be merged into this repo or remain separate? | Duplication of TTS/mouth-shape logic | Decide at Phase 4 (Audio) |
-| Q2 | Image provider for Phase 3: local ComfyUI, external FLUX API, or OpenAI Image? | Architecture of `ImageProvider` interface | Research before Phase 3 |
-| Q3 | Git LFS or object storage for generated PNG assets? | Repo size management | Evaluate at Phase 3 |
-| Q4 | Multi-character scenes — will this be needed in Phase 2+? | Composition complexity | Clarify before Phase 2 template expansion |
-| Q5 | Docker render worker — local only or CI/CD integration? | Automation infrastructure | Define at Phase 5 |
-
-*Source: Analysis of current architecture gaps — Inferred*
+*หมายเหตุ: GSAP ถูกโหลดจาก CDN ตอนเขียน composition — ตอน render HyperFrames compiler จะ inline ให้เอง ไม่มีการเชื่อมต่อ URL ภายนอกขณะ render* — Direct
 
 ---
 
-## 6. Risk Register
+## 5. คำถามที่ยังเปิดอยู่
 
-| # | Risk | Likelihood | Impact | Mitigation |
-|---|------|-----------|--------|------------|
-| R1 | SVG placeholders don't behave like real PNGs (transparency, alpha, scaling) | Low | Medium | Phase 1 uses SVGs; Phase 3+ will use actual PNGs |
-| R2 | Ollama Qwen3-VL 8B may not run reliably alongside Chrome (32GB RAM shared) | Medium | High | Monitor resource usage; fallback to @vision screenshot-only |
-| R3 | Git push of large generated assets accidentally (despite .gitignore) | Low | Medium | .gitignore covers *.mp4, renders/, snapshots/; git push=ask |
-| R4 | Phase 2 template complexity grows unmaintainable | Medium | Low | Plans caps at 5 animation types, 3 poses per POC |
+> พบระหว่างการทำแผนที่สถาปัตยกรรม ไม่ขัดขวางงานปัจจุบัน แต่มีผลต่อเฟสถัดไป
 
-*Source: Context from `CONTEXT.md` (32GB RAM), git rules, plan constraints — Inferred*
+| # | คำถาม | ผลกระทบ | ข้อแนะนำ |
+|---|-------|---------|----------|
+| Q1 | ควรรวม AI-Council-Studio assets ไว้ใน repo เดียวกันหรือแยก? | โค้ด TTS/mouth-shape ซ้ำซ้อน | ตัดสินใจตอน Phase 4 (Audio) |
+| Q2 | Image provider สำหรับ Phase 3: ใช้ ComfyUI ในเครื่อง, FLUX API ภายนอก, หรือ OpenAI Image? | สถาปัตยกรรมของ `ImageProvider` interface | ค้นคว้าก่อน Phase 3 |
+| Q3 | ใช้ Git LFS หรือ object storage สำหรับ PNG assets ที่สร้าง? | การจัดการขนาด repo | ประเมินตอน Phase 3 |
+| Q4 | ฉากที่มีหลายตัวละคร — จะต้องใช้ใน Phase 2+ ไหม? | ความซับซ้อนของ composition | ทำให้ชัดก่อนขยาย template |
+| Q5 | Docker render worker — ใช้ในเครื่องหรือ CI/CD? | โครงสร้างพื้นฐาน automation | กำหนดตอน Phase 5 |
 
----
-
-## 7. Validation Gate Answers
-
-### Q1: Claim traceability — Does every important claim have a source?
-- **Yes** — Every claim in this document is labeled `Direct`, `Inferred`, or `Assumed` with the source file. No unlabeled claims.
-
-### Q2: Scope alignment — Does the final scope match the intake scope?
-- **Yes** — Intake scope: "explain project structure, create /docs". Output: `docs/ARCHITECTURE.md` with all architectural views. No scope creep.
-
-### Q3: Handoff readiness — Does the handoff include unknowns and safe next actions?
-- **Yes** — Open questions (Q1–Q5), risk register (R1–R4), and next steps (below) are all documented.
+*ที่มา: วิเคราะห์ช่องว่างสถาปัตยกรรมปัจจุบัน — Inferred*
 
 ---
 
-## 8. Recommended Next Steps
+## 6. ทะเบียนความเสี่ยง
 
-1. **Review this architecture document** — Confirm or correct assumptions before Phase 2 expansion
-2. **Answer open questions Q1–Q5** — Especially Q4 (multi-character) which affects template design
-3. **Phase 2: Structured Media Pipeline** — Activate @director and @mediaqa in actual workflows
-4. **Connect real image provider** — Begin planning for Phase 3 pose generation
-5. **Commit current state to GitHub** — All Phase 0 and Phase 1 work is uncommitted
+| # | ความเสี่ยง | โอกาส | ผลกระทบ | การป้องกัน |
+|---|-----------|-------|----------|-----------|
+| R1 | SVG placeholder มีพฤติกรรมต่างจาก PNG จริง (transparency, alpha, scaling) | ต่ำ | กลาง | Phase 1 ใช้ SVG; Phase 3+ จะใช้ PNG จริง |
+| R2 | Ollama Qwen3-VL 8B อาจทำงานไม่เสถียรคู่กับ Chrome (RAM 32GB แบ่งกันใช้) | กลาง | สูง | ติดตามการใช้ทรัพยากร; fallback ให้ @vision ใช้ screenshot อย่างเดียว |
+| R3 | เผลอ push assets ขนาดใหญ่ขึ้น GitHub (ถึงจะมี .gitignore) | ต่ำ | กลาง | .gitignore ครอบคลุม *.mp4, renders/, snapshots/; git push=ask |
+| R4 | ความซับซ้อนของ template Phase 2 ใหญ่เกินไป | กลาง | ต่ำ | แผนจำกัดที่ 5 animation types, 3 poses ต่อ POC |
+
+*ที่มา: บริบทจาก `CONTEXT.md` (RAM 32GB), กฎ git, ข้อจำกัดของแผน — Inferred*
 
 ---
 
-*Document created: 2026-06-23 | Pass level: Focus | Mode: Existing System Mapping*
+## 7. คำตอบ Validation Gate
+
+### Q1: ตรวจสอบที่มาของข้อมูล — ทุก claim มีที่มาหรือไม่?
+- **ใช่** — ทุก claim ในเอกสารนี้มีป้าย `Direct`, `Inferred`, หรือ `Assumed` พร้อมระบุไฟล์ที่มา ไม่มี claim ที่ไม่มีป้าย
+
+### Q2: ขอบเขตตรงกัน — ขอบเขตสุดท้ายตรงกับที่กำหนดไว้ตอนรับงานหรือไม่?
+- **ใช่** — ขอบเขตที่รับ: "อธิบายโครงสร้างโปรเจค, สร้าง /docs" ผลลัพธ์: `docs/ARCHITECTURE.md` พร้อมมุมมองสถาปัตยกรรมครบ ไม่มีการขยายขอบเขต
+
+### Q3: พร้อมส่งต่อ — มีการบันทึก unknowns และ actions ที่ปลอดภัยหรือไม่?
+- **ใช่** — คำถามที่ยังเปิดอยู่ (Q1–Q5), ทะเบียนความเสี่ยง (R1–R4), และขั้นตอนถัดไป บันทึกไว้ครบ
+
+---
+
+## 8. ขั้นตอนถัดไปที่แนะนำ
+
+1. **อ่านเอกสารสถาปัตยกรรมนี้** — ยืนยันหรือแก้ไขสมมติฐานก่อนขยาย Phase 2
+2. **ตอบคำถามที่ยังเปิดอยู่ Q1–Q5** — โดยเฉพาะ Q4 (หลายตัวละคร) ที่มีผลต่อการออกแบบ template
+3. **Phase 2: Structured Media Pipeline** — เริ่มใช้ @director และ @mediaqa ในงานจริง
+4. **เชื่อมต่อ image provider จริง** — เริ่มวางแผนสำหรับ Phase 3 (สร้างภาพ pose)
+5. **Commit สถานะปัจจุบันขึ้น GitHub** — งาน Phase 0 และ Phase 1 ยังไม่ commit
+
+---
+
+*เอกสารสร้าง: 2026-06-23 | ระดับ Pass: Focus | โหมด: Existing System Mapping*

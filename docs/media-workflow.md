@@ -1,16 +1,16 @@
-# Media Pipeline Workflow
+# Media Pipeline — ขั้นตอนการทำงาน
 
-> Full workflow for video production via OpenCode Agent Army
+> คู่มือการทำงานสายพานผลิตวิดีโอผ่าน OpenCode Agent Army
 
-## Task Classification
+## การแยกประเภทงาน
 
-When `@captain` receives a request, classify as `media` if it involves:
-- Creating a video from a character
-- Animating scenes
-- Rendering an animation
-- Producing any visual media output
+เมื่อ `@captain` ได้รับคำขอ ให้จัดเป็น `media` ถ้าเกี่ยวข้องกับ:
+- สร้างวิดีโอจากตัวละคร
+- ทำอนิเมชันฉากต่างๆ
+- Render อนิเมชัน
+- ผลิตสื่อ visual ใดๆ
 
-## Workflow Steps
+## ขั้นตอนการทำงาน
 
 ```text
 1. @captain รับโจทย์และตรวจ input
@@ -26,29 +26,29 @@ When `@captain` receives a request, classify as `media` if it involves:
 11. รายงานไฟล์ ผล QA และต้นทุน
 ```
 
-## Asset Gate Rules
+## กฎ Asset Gate
 
 - **ห้ามข้าม Asset Gate** — asset ที่ผิดตั้งแต่ต้น ต่อให้ animation สวยก็เป็นเพียงความผิดพลาดที่เคลื่อนไหวได้
 - ใช้ได้เฉพาะ asset ที่มี status = `approved`
 - Assets ต้องมี manifest entry ครบทุกไฟล์
-- dimension ต้องตรงตาม manifest
+- ขนาด (dimension) ต้องตรงตาม manifest
 
-## Quality Gates
+## ด่านตรวจสอบคุณภาพ (Quality Gates)
 
-| Gate | Tool | Who | Pass/Fail |
-|------|------|-----|-----------|
-| Lint | `hyperframes lint` | @qa | 0 errors required |
-| Validate | `hyperframes validate` | @qa | Pass required |
-| Inspect | `hyperframes inspect` | @reviewer | 0 issues required |
-| Snapshot check | Manual + @mediaqa | @mediaqa | Visual consistency |
-| Render check | FFprobe | @qa | 1920×1080, 30 FPS |
+| ด่าน | เครื่องมือ | ผู้รับผิดชอบ | เกณฑ์ผ่าน |
+|-----|-----------|-------------|-----------|
+| Lint | `hyperframes lint` | @qa | 0 errors |
+| Validate | `hyperframes validate` | @qa | ต้องผ่าน |
+| Inspect | `hyperframes inspect` | @reviewer | 0 issues |
+| ตรวจ snapshot | Manual + @mediaqa | @mediaqa | ความสม่ำเสมอทางภาพ |
+| ตรวจ Render | FFprobe | @qa | 1920×1080, 30 FPS |
 
-## Environment Prerequisites
+## สิ่งที่ต้องมีก่อนเริ่ม (Prerequisites)
 
 ```bash
-node --version          # >= 22
-npm --version           # >= 10
-ffmpeg -version         # >= 7
-npx hyperframes doctor  # All checks pass
-npx hyperframes --version  # >= 0.7
+node --version          # ต้อง >= 22
+npm --version           # ต้อง >= 10
+ffmpeg -version         # ต้อง >= 7
+npx hyperframes doctor  # ทุกข้อต้องผ่าน
+npx hyperframes --version  # ต้อง >= 0.7
 ```
