@@ -1,0 +1,18 @@
+{
+  "name": "opencode-agent-army",
+  "private": true,
+  "version": "0.1.0",
+  "description": "OpenCode Agent Army — Anime Video Pipeline with HyperFrames",
+  "scripts": {
+    "hyperframes": "hyperframes",
+    "doctor": "hyperframes doctor",
+    "lint": "hyperframes lint",
+    "validate": "hyperframes lint && node scripts/validate-assets.mjs",
+    "preview": "hyperframes preview",
+    "render": "hyperframes render",
+    "env-check": "node scripts/env-check.mjs"
+  },
+  "dependencies": {
+    "hyperframes": "^0.7.0"
+  }
+}

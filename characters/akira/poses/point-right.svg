@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 1024" width="512" height="1024">
+  <defs>
+    <style>
+      .hair { fill: #e84393; }
+      .skin { fill: #ffe4d6; }
+      .eye { fill: #00cec9; }
+      .pupil { fill: #2d3436; }
+      .blush { fill: #ff8a8a; opacity: 0.3; }
+      .uniform { fill: #ffffff; }
+      .collar { fill: #003366; }
+      .ribbon { fill: #ff0000; }
+      .skirt { fill: #003366; }
+    </style>
+  </defs>
+  <ellipse cx="256" cy="220" rx="80" ry="100" class="hair"/>
+  <ellipse cx="256" cy="240" rx="60" ry="70" class="skin"/>
+  <path d="M196 220 Q200 140 256 130 Q312 140 316 220 Q320 180 300 150 Q280 130 256 125 Q232 130 212 150 Q192 180 196 220Z" class="hair"/>
+  <path d="M196 220 Q180 280 185 340 Q190 350 200 340 Q205 280 210 240" class="hair"/>
+  <path d="M316 220 Q332 280 327 340 Q322 350 312 340 Q307 280 302 240" class="hair"/>
+  <!-- Eyes (neutral look) -->
+  <ellipse cx="234" cy="235" rx="9" ry="6" class="eye"/>
+  <ellipse cx="278" cy="235" rx="9" ry="6" class="eye"/>
+  <ellipse cx="235" cy="236" rx="4" ry="5" class="pupil"/>
+  <ellipse cx="279" cy="236" rx="4" ry="5" class="pupil"/>
+  <circle cx="237" cy="233" r="2" fill="white"/>
+  <circle cx="281" cy="233" r="2" fill="white"/>
+  <path d="M220 223 Q232 218 242 222" stroke="#5c3d2e" stroke-width="2" fill="none"/>
+  <path d="M270 222 Q282 218 290 223" stroke="#5c3d2e" stroke-width="2" fill="none"/>
+  <!-- Blush -->
+  <ellipse cx="220" cy="258" rx="12" ry="5" class="blush"/>
+  <ellipse cx="292" cy="258" rx="12" ry="5" class="blush"/>
+  <!-- Mouth -->
+  <path d="M248 265 Q256 270 264 265" stroke="#c0392b" stroke-width="1.5" fill="none"/>
+  <rect x="240" y="300" width="32" height="30" class="skin"/>
+  <path d="M196 330 L256 370 L316 330 L310 380 L256 420 L202 380 Z" class="collar"/>
+  <path d="M256 370 L256 420" stroke="#ffffff" stroke-width="2"/>
+  <path d="M220 350 L210 390" stroke="#ffffff" stroke-width="1.5"/>
+  <path d="M292 350 L302 390" stroke="#ffffff" stroke-width="1.5"/>
+  <path d="M256 360 L230 340 L240 370 Z" class="ribbon"/>
+  <path d="M256 360 L282 340 L272 370 Z" class="ribbon"/>
+  <circle cx="256" cy="360" r="4" class="ribbon"/>
+  <rect x="196" y="380" width="120" height="120" rx="5" class="uniform"/>
+  <!-- Left arm (down) -->
+  <path d="M196 400 L170 470 L175 475" stroke="#ffe4d6" stroke-width="18" fill="none" stroke-linecap="round"/>
+  <!-- RIGHT arm pointing right -->
+  <path d="M316 400 L392 380 L432 370" stroke="#ffe4d6" stroke-width="16" fill="none" stroke-linecap="round"/>
+  <circle cx="432" cy="370" r="8" class="skin"/>
+  <path d="M216 500 L176 640 L336 640 L296 500 Z" class="skirt"/>
+  <line x1="216" y1="530" x2="296" y2="530" stroke="#004080" stroke-width="1" opacity="0.5"/>
+  <line x1="206" y1="560" x2="306" y2="560" stroke="#004080" stroke-width="1" opacity="0.5"/>
+  <line x1="196" y1="590" x2="316" y2="590" stroke="#004080" stroke-width="1" opacity="0.5"/>
+  <rect x="230" y="640" width="24" height="120" class="skin"/>
+  <rect x="258" y="640" width="24" height="120" class="skin"/>
+  <rect x="228" y="710" width="28" height="40" rx="2" fill="white"/>
+  <rect x="256" y="710" width="28" height="40" rx="2" fill="white"/>
+  <ellipse cx="242" cy="760" rx="18" ry="8" fill="#5c3d2e"/>
+  <ellipse cx="270" cy="760" rx="18" ry="8" fill="#5c3d2e"/>
+  <ellipse cx="195" cy="210" rx="6" ry="4" fill="#ff0000" transform="rotate(-15 195 210)"/>
+</svg>

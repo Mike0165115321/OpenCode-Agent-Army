@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Akira — Introduction</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #1a1a2e; overflow: hidden; }
+
+    /* ===== Root Composition Container ===== */
+    #akira-intro {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    }
+
+    /* ===== Background Decorations ===== */
+    .bg-circle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.08;
+    }
+    .bg-circle-1 {
+      width: 600px; height: 600px;
+      background: #e84393;
+      top: -200px; right: -150px;
+    }
+    .bg-circle-2 {
+      width: 400px; height: 400px;
+      background: #00cec9;
+      bottom: -100px; left: -100px;
+    }
+
+    /* ===== Character Poses ===== */
+    .character-container {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 400px;
+      height: 800px;
+    }
+    .pose {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      opacity: 0;
+    }
+    /* Opacity handled by GSAP from() */
+
+    /* ===== Text Elements ===== */
+    .text-container {
+      position: absolute;
+      top: 80px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      pointer-events: none;
+    }
+    .greeting {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 72px;
+      font-weight: 700;
+      color: #ffffff;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+    }
+    .greeting .highlight {
+      color: #e84393;
+    }
+    .subtitle {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 36px;
+      font-weight: 400;
+      color: #a0aec0;
+      margin-top: 16px;
+    }
+
+    /* ===== Floating Particles ===== */
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(232, 67, 147, 0.15);
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div
+    id="akira-intro"
+    data-composition-id="akira-intro"
+    data-start="0"
+    data-duration="10"
+    data-width="1920"
+    data-height="1080"
+  >
+    <!-- Background decorations -->
+    <div id="bg-circle-1" class="bg-circle bg-circle-1 clip" data-start="0" data-duration="10" data-track-index="0"></div>
+    <div id="bg-circle-2" class="bg-circle bg-circle-2 clip" data-start="0" data-duration="10" data-track-index="1"></div>
+
+    <!-- Character poses — stacked, shown one at a time -->
+    <div class="character-container">
+      <img id="pose-idle" class="pose pose-idle clip" data-start="0.5" data-duration="4.5" data-track-index="2"
+           src="characters/akira/poses/idle.svg" alt="Akira idle">
+      <img id="pose-point-left" class="pose pose-point-left clip" data-start="5.0" data-duration="2.5" data-track-index="3"
+           src="characters/akira/poses/point-left.svg" alt="Akira point left">
+      <img id="pose-point-right" class="pose pose-point-right clip" data-start="7.5" data-duration="2.5" data-track-index="4"
+           src="characters/akira/poses/point-right.svg" alt="Akira point right">
+    </div>
+
+    <!-- Text -->
+    <div class="text-container">
+      <div id="greeting" class="greeting clip" data-start="3.0" data-duration="3.0" data-track-index="5">
+        Hello, I'm <span class="highlight">Akira</span>!
+      </div>
+      <div id="subtitle" class="subtitle clip" data-start="6.0" data-duration="4.0" data-track-index="6">
+        Welcome to the Anime Pipeline
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      // ===== Scene 1: Background & Decor (0–10s) =====
+      tl.from(".bg-circle-1", { opacity: 0, scale: 0.5, duration: 1.0, ease: "power3.out" }, 0);
+      tl.from(".bg-circle-2", { opacity: 0, scale: 0.3, duration: 1.2, ease: "power3.out" }, 0.2);
+
+      // ===== Akira Idle: Slide in (0.5–2.0s) =====
+      tl.from(".pose-idle", {
+        y: 60, opacity: 0, duration: 0.8, ease: "power3.out"
+      }, 0.5);
+
+      // Subtle idle breathing (y-float loop)
+      tl.to(".pose-idle", {
+        y: -6, duration: 1.5, ease: "sine.inOut", repeat: 1, yoyo: true
+      }, 2.0);
+
+      // ===== Text entrance: Greeting (3.0–5.0s) =====
+      tl.from(".greeting", {
+        y: 30, opacity: 0, duration: 0.6, ease: "power2.out"
+      }, 3.0);
+
+      // ===== Pose transition: idle → point-left (5.0s) =====
+      // Idle fades out as point-left fades in = crossfade
+      tl.to(".pose-idle", { opacity: 0, duration: 0.3, ease: "power2.in" }, 5.0);
+      tl.fromTo(".pose-point-left", { opacity: 0, scale: 0.95 }, {
+        opacity: 1, scale: 1, duration: 0.4, ease: "power2.out"
+      }, 5.0);
+
+      // ===== Text: Greeting fades out, subtitle in (6.0s) =====
+      tl.to(".greeting", { opacity: 0, y: -20, duration: 0.4, ease: "power2.in" }, 6.0);
+      tl.from(".subtitle", {
+        y: 20, opacity: 0, duration: 0.5, ease: "power2.out"
+      }, 6.2);
+
+      // ===== Pose transition: point-left → point-right (7.5s) =====
+      tl.to(".pose-point-left", { opacity: 0, duration: 0.3, ease: "power2.in" }, 7.5);
+      tl.fromTo(".pose-point-right", { opacity: 0, scale: 0.95 }, {
+        opacity: 1, scale: 1, duration: 0.4, ease: "power2.out"
+      }, 7.5);
+
+      // ===== Final fade out (9.0–10.0s) =====
+      tl.to(".bg-circle-1, .bg-circle-2", { opacity: 0, duration: 0.8, ease: "power2.in" }, 9.2);
+      tl.to(".pose-point-right", { opacity: 0, y: 30, duration: 0.8, ease: "power2.in" }, 9.2);
+      tl.to(".subtitle", { opacity: 0, y: -15, duration: 0.6, ease: "power2.in" }, 9.0);
+
+      window.__timelines["akira-intro"] = tl;
+    </script>
+  </div>
+</body>
+</html>

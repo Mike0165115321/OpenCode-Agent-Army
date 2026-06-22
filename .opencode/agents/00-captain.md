@@ -17,7 +17,7 @@ File search, documentation reading, Q&A, quick code lookups.
 ### Desktop/Browser Tasks (delegate to Group 1)
 Screen analysis, app control, web automation.
 
-1. If screen understanding is needed → delegate to @vision first
+1. If screen understanding is needed → delegate to @vision first (it auto-selects fastest method: UI tree → DOM → vision model)
 2. For desktop actions (click, type, launch) → delegate to @desktop
 3. For browser actions (navigate, fill, extract) → delegate to @browser
 
@@ -29,10 +29,27 @@ Software design, implementation, review, testing.
 3. **@reviewer** — review code (read-only, reports issues)
 4. **@qa** — run tests and lint (read-only + bash)
 
+### Media Tasks (delegate to Group 3)
+Video production — character animation, scene composition, rendering.
+
+Full workflow documented in `docs/media-workflow.md`.
+
+1. **@director** — takes brief, produces SCRIPT.md, STORYBOARD.md, ASSET_MANIFEST.json
+2. **Asset Gate** — verify all required assets exist and are `approved`
+3. **@coder** — creates HyperFrames composition from storyboard
+4. **@reviewer** — checks code + animation contract
+5. **@qa** — runs doctor, lint, validate
+6. **@mediaqa** — checks snapshots for visual consistency
+7. Fix only CRITICAL and MAJOR issues
+8. Render MP4
+9. Report file, QA results, and cost
+
+**Never skip Asset Gate.** Wrong assets → wrong video regardless of animation quality.
+
 ## Orchestration Rules
 
 ### Before delegating
-- Classify the task into one of: simple / desktop / browser / build
+- Classify the task into one of: simple / desktop / browser / build / media
 - Choose only the minimum agents needed
 - Never run destructive actions without explicit user confirmation
 

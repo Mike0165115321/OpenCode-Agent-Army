@@ -1,0 +1,77 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Storyboard Schema",
+  "description": "Storyboard for a video production — defines scenes, timing, camera, and required assets",
+  "type": "object",
+  "required": ["title", "project", "fps", "resolution", "scenes"],
+  "properties": {
+    "title": { "type": "string", "description": "Video title" },
+    "project": { "type": "string", "description": "Project name/ID" },
+    "fps": { "type": "integer", "default": 30 },
+    "resolution": {
+      "type": "object",
+      "required": ["width", "height"],
+      "properties": {
+        "width": { "type": "integer", "default": 1920 },
+        "height": { "type": "integer", "default": 1080 }
+      }
+    },
+    "totalDuration": { "type": "number", "description": "Total video duration in seconds" },
+    "scenes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "startTime", "duration", "camera", "characters", "requiredAssets", "dialogue"],
+        "properties": {
+          "id": { "type": "string", "description": "Scene identifier" },
+          "title": { "type": "string", "description": "Scene title/description" },
+          "startTime": { "type": "number", "description": "Start time in seconds from video start" },
+          "duration": { "type": "number", "description": "Scene duration in seconds" },
+          "camera": {
+            "type": "object",
+            "required": ["angle", "movement"],
+            "properties": {
+              "angle": { "type": "string", "enum": ["front", "side", "low", "high", "over-shoulder"] },
+              "movement": { "type": "string", "enum": ["static", "pan-left", "pan-right", "zoom-in", "zoom-out", "track"] }
+            }
+          },
+          "characters": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id", "position"],
+              "properties": {
+                "id": { "type": "string" },
+                "position": { "type": "string", "enum": ["left", "center", "right"] },
+                "pose": { "type": "string" },
+                "expression": { "type": "string" }
+              }
+            }
+          },
+          "requiredAssets": {
+            "type": "array",
+            "items": { "type": "string", "description": "Asset ID references" }
+          },
+          "dialogue": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "character": { "type": "string" },
+                "text": { "type": "string" },
+                "startTime": { "type": "number" },
+                "endTime": { "type": "number" }
+              }
+            }
+          },
+          "background": {
+            "type": "string",
+            "description": "Background description or color hex"
+          },
+          "notes": { "type": "string", "description": "Additional scene notes" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Asset Manifest Schema",
+  "description": "Every character asset (pose, expression, mouth shape) must have a manifest entry",
+  "type": "object",
+  "required": [
+    "id", "file", "character", "pose", "expression",
+    "camera", "direction", "transparent", "width", "height", "status"
+  ],
+  "properties": {
+    "id": { "type": "string", "description": "Unique asset identifier (e.g., 'akira-point-left-happy')" },
+    "file": { "type": "string", "description": "Relative path from project root" },
+    "character": { "type": "string", "description": "Character ID this asset belongs to" },
+    "pose": {
+      "type": "string",
+      "description": "Pose name (idle, point-left, point-right, running, etc.)"
+    },
+    "expression": {
+      "type": "string",
+      "description": "Expression name (neutral, happy, angry, surprised, sad, etc.)"
+    },
+    "camera": {
+      "type": "string",
+      "enum": ["close-up", "medium-shot", "full-body", "extreme-close-up"],
+      "description": "Camera distance"
+    },
+    "direction": {
+      "type": "string",
+      "enum": ["front", "front-three-quarter", "side", "back-three-quarter", "back"],
+      "description": "Character facing direction"
+    },
+    "transparent": { "type": "boolean", "description": "Whether the image has transparent background" },
+    "width": { "type": "integer", "minimum": 1, "description": "Image width in pixels" },
+    "height": { "type": "integer", "minimum": 1, "description": "Image height in pixels" },
+    "status": {
+      "type": "string",
+      "enum": ["requested", "generated", "needs-review", "approved", "rejected"],
+      "description": "Current asset status"
+    },
+    "mouthShape": {
+      "type": "string",
+      "enum": ["closed", "small", "open"],
+      "description": "Optional: mouth shape for dialogue syncing"
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "enum": ["generated", "manual", "reference"] },
+        "provider": { "type": "string" },
+        "model": { "type": "string" },
+        "reference": { "type": "string" },
+        "promptHash": { "type": "string" }
+      },
+      "required": ["type"],
+      "description": "Source metadata for generated assets"
+    }
+  }
+}

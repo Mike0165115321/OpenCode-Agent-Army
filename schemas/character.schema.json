@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Character Bible Schema",
+  "description": "Character Bible for Anime Video Pipeline — defines character appearance constraints and asset paths",
+  "type": "object",
+  "required": [
+    "id", "name", "hairColor", "hairStyle", "eyeColor", "faceShape",
+    "height", "outfit", "shoes", "accessories", "accentColor",
+    "forbiddenChanges", "styleKeywords", "negativeConstraints"
+  ],
+  "properties": {
+    "id": { "type": "string", "description": "Unique character identifier (e.g., 'akira')" },
+    "name": { "type": "string", "description": "Display name" },
+    "hairColor": { "type": "string", "description": "Hair color hex or name" },
+    "hairStyle": { "type": "string", "description": "Hair style description" },
+    "eyeColor": { "type": "string", "description": "Eye color hex or name" },
+    "faceShape": { "type": "string", "description": "Face shape description" },
+    "height": { "type": "string", "description": "Height description in cm or relative" },
+    "build": { "type": "string", "description": "Body build description" },
+    "outfit": { "type": "string", "description": "Primary outfit description" },
+    "shoes": { "type": "string", "description": "Shoe type and color" },
+    "accessories": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "List of accessories (glasses, necklace, etc.)"
+    },
+    "accentColor": { "type": "string", "description": "Character's signature accent color hex" },
+    "forbiddenChanges": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Things that must NEVER change about this character"
+    },
+    "styleKeywords": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Keywords for image generation prompts"
+    },
+    "negativeConstraints": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Negative prompt constraints for image generation"
+    }
+  }
+}

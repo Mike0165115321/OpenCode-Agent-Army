@@ -1,0 +1,62 @@
+{
+  "character": "akira",
+  "name": "Akira",
+  "poseCount": 3,
+  "expressionCount": 2,
+  "assets": [
+    {
+      "id": "akira-idle-neutral",
+      "file": "characters/akira/poses/idle.svg",
+      "character": "akira",
+      "pose": "idle",
+      "expression": "neutral",
+      "camera": "medium-shot",
+      "direction": "front",
+      "transparent": true,
+      "width": 512,
+      "height": 1024,
+      "status": "approved",
+      "source": {
+        "type": "reference",
+        "provider": "svg-placeholder",
+        "model": "inline"
+      }
+    },
+    {
+      "id": "akira-point-left-happy",
+      "file": "characters/akira/poses/point-left.svg",
+      "character": "akira",
+      "pose": "point-left",
+      "expression": "happy",
+      "camera": "medium-shot",
+      "direction": "front-three-quarter",
+      "transparent": true,
+      "width": 512,
+      "height": 1024,
+      "status": "approved",
+      "source": {
+        "type": "reference",
+        "provider": "svg-placeholder",
+        "model": "inline"
+      }
+    },
+    {
+      "id": "akira-point-right-neutral",
+      "file": "characters/akira/poses/point-right.svg",
+      "character": "akira",
+      "pose": "point-right",
+      "expression": "neutral",
+      "camera": "medium-shot",
+      "direction": "front-three-quarter",
+      "transparent": true,
+      "width": 512,
+      "height": 1024,
+      "status": "approved",
+      "source": {
+        "type": "reference",
+        "provider": "svg-placeholder",
+        "model": "inline"
+      }
+    }
+  ]
+}
